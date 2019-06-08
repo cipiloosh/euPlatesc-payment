@@ -47,7 +47,7 @@ class Gateway {
     if (!config.secretKey) {
       throw new Error('secretKey is required');
     }
-    if (!config.merchantId) {
+    if (!config.sandbox) {
       throw new Error('sandbox is required');
     }
 

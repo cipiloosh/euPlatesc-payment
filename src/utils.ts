@@ -22,14 +22,8 @@ const generateNonce = () => {
 const getTimestamp = () => {
   return moment()
     .utcOffset(0)
-    .unix();
+    .format('YYYYMMDDHHmmss');
 };
-
-// const getTimestamp = () => {
-//   return moment()
-//     .utcOffset(0)
-//     .format('YYYYMMDDHHmmss');
-// };
 
 const signData = (data: IData, key: string) => {
   const fields = Object.keys(data);
@@ -56,17 +50,17 @@ const signData = (data: IData, key: string) => {
 
 const clientInfoToGatewayFields = (clientInfo: IClientAddress, prefix = '') => {
   const clientInfoToFieldsMap: IClientAddress = {
-    address: '',
-    city: '',
-    company: '',
-    country: '',
-    email: '',
-    fax: '',
-    firstName: '',
-    lastName: '',
-    phone: '',
-    state: '',
-    zip: '',
+    address: 'add',
+    city: 'city',
+    company: 'company',
+    country: 'country',
+    email: 'email',
+    fax: 'fax',
+    firstName: 'fName',
+    lastName: 'lName',
+    phone: 'phone',
+    state: 'state',
+    zip: 'zip',
   };
 
   const result: { [key: string]: string } = {};
@@ -79,13 +73,5 @@ const clientInfoToGatewayFields = (clientInfo: IClientAddress, prefix = '') => {
 
   return result;
 };
-
-//   Lazy(clientInfo).keys().each((field) => {
-//     if(typeof clientInfoToFieldsMap[field] !== 'undefined') {
-//       result[`${prefix}${clientInfoToFieldsMap[field]}`] = clientInfo[field];
-//     }
-//   });
-
-// }
 
 export { generateNonce, getTimestamp, signData, clientInfoToGatewayFields };
