@@ -12,16 +12,19 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
-    "prepare" : "npm run build",
-    "preversion" : "npm run lint",
-    "version" : "npm run format && git add -A src",
-    "postversion" : "git push && git push --tags"
+    "prepare": "npm run build",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cipiloosh/euPlatesc-payment.git"
   },
-  "keywords": ["euPlatesc", "payment-gateway-romania"],
+  "keywords": [
+    "euPlatesc",
+    "payment-gateway-romania"
+  ],
   "author": "ciprix",
   "license": "ISC",
   "bugs": {
