@@ -1,5 +1,6 @@
 import * as constants from './constants';
 import * as utils from './utils';
+import { IData } from './utils';
 
 interface IClientAddress {
   address: string;
@@ -65,11 +66,9 @@ class Gateway {
       }
       const { amount, currency, invoiceId, orderDescription, billingDetails, shippingDetails, extraData } = params;
 
-      const requestData = {
+      const requestData: IData = {
         amount,
         currency: currency || 'RON',
-        extraData: '',
-        fp_hash: '',
         invoice_id: invoiceId || '',
         merch_id: this.config.merchantId || '',
         nonce: utils.generateNonce(),
@@ -88,7 +87,7 @@ class Gateway {
       }
 
       if (extraData) {
-        requestData.extraData = extraData;
+        requestData.ExtraData = extraData;
       }
 
       return resolve(requestData);

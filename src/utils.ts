@@ -3,7 +3,6 @@ import moment from 'moment';
 import { IClientAddress } from './Gateway';
 
 interface IData {
-  [key: string]: any;
   ExtraData?: string;
   amount: number;
   currency: string;
@@ -12,7 +11,7 @@ interface IData {
   nonce: string;
   order_desc: string;
   timestamp: string;
-  fp_hash: string;
+  fp_hash?: string;
 }
 
 const generateNonce = () => {
@@ -30,7 +29,7 @@ const signData = (data: IData, key: string) => {
   const stringValues = fields
     .map(
       (field: string): string => {
-        let value: any = data[field];
+        let value: string = data[field];
 
         if (!value) {
           return '-';
@@ -74,4 +73,4 @@ const clientInfoToGatewayFields = (clientInfo: IClientAddress, prefix = '') => {
   return result;
 };
 
-export { generateNonce, getTimestamp, signData, clientInfoToGatewayFields };
+export { generateNonce, getTimestamp, signData, clientInfoToGatewayFields, IData };
