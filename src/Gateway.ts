@@ -65,15 +65,15 @@ class Gateway {
         return reject(new Error('Amount is required'));
       }
       const { amount, currency, invoiceId, orderDescription, billingDetails, shippingDetails, extraData } = params;
-
+      // The order of requestedData keys matters. 
       const requestData: IData = {
         amount,
         curr: currency || 'RON',
         invoice_id: invoiceId || '',
-        merch_id: this.config.merchantId || '',
-        nonce: utils.generateNonce(),
         order_desc: orderDescription || '',
+        merch_id: this.config.merchantId || '',
         timestamp: utils.getTimestamp().toString(),
+        nonce: utils.generateNonce(),
       };
 
       requestData.fp_hash = utils.signData(requestData, this.config.secretKey);
