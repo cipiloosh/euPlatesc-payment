@@ -6,4 +6,4 @@ const REQUEST_ENDPOINTS = {
   [SANDBOX_MODE]: 'https://secure.euplatesc.ro/tdsprocess/tranzactd.php',
 };
 
-export {LIVE_MODE, SANDBOX_MODE, REQUEST_ENDPOINTS};
+export { LIVE_MODE, SANDBOX_MODE, REQUEST_ENDPOINTS };
