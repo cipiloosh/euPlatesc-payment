@@ -68,7 +68,7 @@ class Gateway {
 
       const requestData: IData = {
         amount,
-        currency: currency || 'RON',
+        curr: currency || 'RON',
         invoice_id: invoiceId || '',
         merch_id: this.config.merchantId || '',
         nonce: utils.generateNonce(),

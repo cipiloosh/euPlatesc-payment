@@ -5,7 +5,7 @@ import { IClientAddress } from './Gateway';
 interface IData {
   ExtraData?: string;
   amount: number;
-  currency: string;
+  curr: string;
   invoice_id: string;
   merch_id: string;
   nonce: string;
