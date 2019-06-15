@@ -1,35 +1,6 @@
 import * as constants from './constants';
+import { IData, IParams, IParsedResponse, IResponseData } from './types';
 import * as utils from './utils';
-import { IData } from './utils';
-
-interface IClientAddress {
-  address: string;
-  city: string;
-  company: string;
-  country: string;
-  email: string;
-  fax: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  state: string;
-  zip: string;
-  [propName: string]: string;
-}
-
-interface IParams {
-  amount: number;
-  billingDetails: IClientAddress;
-  shippingDetails: IClientAddress;
-  extraData: string;
-  currency: string;
-  invoiceId: string;
-  merch_id: string;
-  nonce: string;
-  orderDescription: string;
-  timestamp: string;
-  fp_hash: string;
-}
 
 class Gateway {
   public config: {
@@ -65,7 +36,7 @@ class Gateway {
         return reject(new Error('Amount is required'));
       }
       const { amount, currency, invoiceId, orderDescription, billingDetails, shippingDetails, extraData } = params;
-      // The order of requestedData keys matters. 
+      // The order of requestedData keys matters.
       const requestData: IData = {
         amount,
         curr: currency || 'RON',
@@ -93,6 +64,64 @@ class Gateway {
       return resolve(requestData);
     });
   }
+
+  public parseGatewayResponse(data: IResponseData) {
+    return new Promise((resolve, reject) => {
+      const expectedFields = [
+        'amount',
+        'curr',
+        'invoice_id',
+        'ep_id',
+        'merch_id',
+        'action',
+        'message',
+        'approval',
+        'timestamp',
+        'nonce',
+        'fp_hash',
+      ];
+
+      expectedFields.forEach(field => {
+        if (typeof data[field] === 'undefined') {
+          reject(new Error(`Invalid response. The ${field} field is missing.`));
+        }
+      });
+
+      const keysToOmit = ['backurl', 'fp_hash', 'lang', 'ExtraData[rate]'];
+
+      const filteredData = JSON.parse(JSON.stringify(data));
+
+      keysToOmit.forEach(key => filteredData[key] && delete filteredData[key]);
+
+      const dataHash = utils.signData(filteredData, this.config.secretKey);
+
+      if (dataHash !== data.fp_hash.toLowerCase()) {
+        reject(new Error(`Invalid response hash ${dataHash} - ${data.fp_hash.toLowerCase()}`));
+      }
+
+      const responseData: IParsedResponse = {
+        amount: data.amount,
+        currency: data.curr,
+        invoiceId: data.invoice_id,
+        transactionId: data.ep_id,
+        merchantId: data.merch_id,
+        action: data.action,
+        message: data.message,
+        approval: data.approval,
+        timestamp: data.timestamp,
+      };
+
+      if (data.backurl) {
+        responseData.backUrl = data.backurl;
+      }
+
+      if (data.ExtraData) {
+        responseData.ExtraData = data.ExtraData;
+      }
+
+      return resolve(responseData);
+    });
+  }
 }
 
-export { Gateway, IParams, IClientAddress };
+export { Gateway };

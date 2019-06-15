@@ -1,18 +1,6 @@
 import crypto from 'crypto';
 import moment from 'moment';
-import { IClientAddress } from './Gateway';
-
-interface IData {
-  ExtraData?: string;
-  amount: number;
-  curr: string;
-  invoice_id: string;
-  merch_id: string;
-  nonce: string;
-  order_desc: string;
-  timestamp: string;
-  fp_hash?: string;
-}
+import { IClientAddress, IData } from './types';
 
 const generateNonce = () => {
   return crypto.randomBytes(32).toString('hex');
@@ -73,4 +61,4 @@ const clientInfoToGatewayFields = (clientInfo: IClientAddress, prefix = '') => {
   return result;
 };
 
-export { generateNonce, getTimestamp, signData, clientInfoToGatewayFields, IData };
+export { generateNonce, getTimestamp, signData, clientInfoToGatewayFields };
